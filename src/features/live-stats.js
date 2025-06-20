@@ -2,14 +2,13 @@ import { logStyled } from '../utils/logger.js';
 import { animate, inView } from 'motion';
 
 async function getLiveStats() {
-    // TODO: get live stats from API
-
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    const response = await fetch('https://app.propal.io/api/landing');
+    const data = await response.json();
 
     return {
-        totalProposals: 100,
-        totalOpportunities: 1000,
-        totalProposalAccepted: 90,
+        totalProposals: data.acceptedProposalCount,
+        totalOpportunities: data.opportunitySum,
+        totalProposalAccepted: data.acceptedProposalCount,
     }
 }
 
@@ -33,9 +32,7 @@ export default function initLiveStats() {
     const totalOpportunities = document.getElementById('totalOpportunities');
     const totalProposalAccepted = document.getElementById('totalProposalAccepted');
 
-    getLiveStats().then(liveStats => {
-        console.log(liveStats);
-        
+    getLiveStats().then(liveStats => {        
         // Animation pour chaque élément quand il devient visible
         inView(totalProposals, () => {
             animateCounter(totalProposals, liveStats.totalProposals);
