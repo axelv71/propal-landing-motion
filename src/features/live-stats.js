@@ -35,7 +35,7 @@ export default function initLiveStats() {
     getLiveStats().then(liveStats => {        
         // Animation pour chaque élément quand il devient visible
         inView(totalProposals, () => {
-            animateCounter(totalProposals, liveStats.totalProposals, '+');
+            animateCounter(totalProposals, liveStats.totalProposals, 2.5, '+');
         });
 
         inView(totalOpportunities, () => {
@@ -43,7 +43,7 @@ export default function initLiveStats() {
         });
 
         inView(totalProposalAccepted, () => {
-            animateCounter(totalProposalAccepted, liveStats.totalProposalAccepted, '+');
+            animateCounter(totalProposalAccepted, liveStats.totalProposalAccepted, 2.5, '+');
         });
 
     }).catch(error => {
