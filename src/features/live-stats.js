@@ -2,7 +2,7 @@ import { logStyled } from '../utils/logger.js';
 import { animate, inView } from 'motion';
 
 async function getLiveStats() {
-    const response = await fetch('https://app.propal.io/api/landing');
+    const response = await fetch('https://app.propal.io/api/landing/realtime-datas');
     const data = await response.json();
 
     return {
@@ -12,7 +12,7 @@ async function getLiveStats() {
     }
 }
 
-function animateCounter(element, targetValue, duration = 2.5) {
+function animateCounter(element, targetValue, duration = 2.5, prefix = '') {
     animate(0, targetValue, {
         duration: duration,
         easing: "spring", // Spring simple sans paramètres
@@ -21,7 +21,7 @@ function animateCounter(element, targetValue, duration = 2.5) {
         onUpdate: (latest) => {
             // Utilise des décimales pour un rendu plus fluide, puis arrondit à la fin
             const value = Math.round(latest);
-            element.innerHTML = value.toLocaleString(); // Ajoute des séparateurs de milliers pour un meilleur rendu
+            element.innerHTML = prefix + value.toLocaleString(); // Ajoute des séparateurs de milliers pour un meilleur rendu
         },
     });
 }
@@ -39,7 +39,7 @@ export default function initLiveStats() {
         });
 
         inView(totalOpportunities, () => {
-            animateCounter(totalOpportunities, liveStats.totalOpportunities);
+            animateCounter(totalOpportunities, liveStats.totalOpportunities, 2.5, '$');
         });
 
         inView(totalProposalAccepted, () => {
