@@ -4,5 +4,8 @@ import initPosthog from './features/posthog.js';
 initPosthog();
 
 document.addEventListener('DOMContentLoaded', () => {
-    initLiveStats();
+    // Ne lance initLiveStats() que si on est à la racine du site
+    if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        initLiveStats();
+    }
 })
