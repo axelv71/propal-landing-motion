@@ -6,7 +6,7 @@ async function getLiveStats() {
     const data = await response.json();
 
     return {
-        totalProposals: data.acceptedProposalCount,
+        totalProposals: data.proposalCount,
         totalOpportunities: data.opportunitySum,
         totalProposalAccepted: data.acceptedProposalCount,
     }
@@ -35,7 +35,7 @@ export default function initLiveStats() {
     getLiveStats().then(liveStats => {        
         // Animation pour chaque élément quand il devient visible
         inView(totalProposals, () => {
-            animateCounter(totalProposals, liveStats.totalProposals);
+            animateCounter(totalProposals, liveStats.totalProposals, '+');
         });
 
         inView(totalOpportunities, () => {
@@ -43,7 +43,7 @@ export default function initLiveStats() {
         });
 
         inView(totalProposalAccepted, () => {
-            animateCounter(totalProposalAccepted, liveStats.totalProposalAccepted);
+            animateCounter(totalProposalAccepted, liveStats.totalProposalAccepted, '+');
         });
 
     }).catch(error => {
