@@ -10,7 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.pathname === "/index.html" ||
     window.location.pathname === "/landing" ||
     window.location.pathname === "/en" ||
-    window.location.pathname === "/fr"
+    window.location.pathname === "/en/home-v3" ||
+    window.location.pathname === "/fr" ||
+    window.location.pathname === "/fr/home-v3"
   ) {
     initLiveStats();
   }
