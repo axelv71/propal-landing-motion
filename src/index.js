@@ -12,7 +12,11 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.pathname === "/eng" ||
     window.location.pathname === "/eng/home-v3" ||
     window.location.pathname === "/fr" ||
-    window.location.pathname === "/fr/home-v3"
+    window.location.pathname === "/fr/home-v3" ||
+    window.location.pathname === "/eng/book-a-demo" ||
+    window.location.pathname === "/fr/book-a-demo" ||
+    window.location.pathname === "/eng/pricing" ||
+    window.location.pathname === "/fr/pricing"
   ) {
     initLiveStats();
   }
