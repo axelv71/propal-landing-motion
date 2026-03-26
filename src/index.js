@@ -3,7 +3,6 @@ import initPosthog from "./features/posthog.js";
 import createBlogSummary from "./features/blog-summary.js";
 
 initPosthog();
-createBlogSummary();
 
 document.addEventListener("DOMContentLoaded", () => {
   // Ne lance initLiveStats() que si on est à la racine du site
@@ -21,5 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.pathname === "/fr/pricing"
   ) {
     initLiveStats();
+  }
+
+  if (window.location.pathname.includes("/blog/")) {
+    createBlogSummary();
   }
 });
