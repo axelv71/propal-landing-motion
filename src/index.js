@@ -1,7 +1,9 @@
 import initLiveStats from "./features/live-stats.js";
 import initPosthog from "./features/posthog.js";
+import createBlogSummary from "./features/blog-summary.js";
 
 initPosthog();
+createBlogSummary();
 
 document.addEventListener("DOMContentLoaded", () => {
   // Ne lance initLiveStats() que si on est à la racine du site
