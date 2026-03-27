@@ -15,7 +15,13 @@ function slugify(text) {
     .replace(/-+$/, ""); // Suppression des - de fin
 }
 
-export default async function createBlogSummary() {
+function setActiveItem(itemsById, activeId) {
+  for (const [id, item] of itemsById) {
+    item.classList.toggle("active", id === activeId);
+  }
+}
+
+export default function createBlogSummary() {
   logStyled("INIT", "Blog Summary");
 
   const summaryList = document.getElementById("summary-list");
@@ -35,9 +41,11 @@ export default async function createBlogSummary() {
 
   // Get all H2 tags in the blog content
   const h2Tags = blogContent.querySelectorAll("h2");
+  const itemsById = new Map();
 
+  let count = 1;
   for (const h2Tag of h2Tags) {
-    const textContent = h2Tag.textContent;
+    const textContent = `${count}. ${h2Tag.textContent}`;
     const slug = slugify(textContent);
 
     // Change the id of the h2 tag to the slug
@@ -46,9 +54,45 @@ export default async function createBlogSummary() {
     // Create a new li link element
     const li = document.createElement("li");
     li.classList.add("blog-link");
-    li.innerHTML = `<a href="#${slug}">${textContent}</a>`;
+    const link = document.createElement("a");
+    link.href = `#${slug}`;
+    link.textContent = textContent;
+    link.addEventListener("click", () => {
+      setActiveItem(itemsById, slug);
+    });
+    li.appendChild(link);
 
     // Add the li to the summary list
     summaryList.appendChild(li);
+    itemsById.set(slug, li);
+    count++;
+  }
+
+  if (h2Tags.length === 0) {
+    return;
+  }
+
+  const initialActiveId =
+    window.location.hash.slice(1) || itemsById.keys().next().value;
+  setActiveItem(itemsById, initialActiveId);
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visibleHeading = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+
+      if (visibleHeading?.target?.id) {
+        setActiveItem(itemsById, visibleHeading.target.id);
+      }
+    },
+    {
+      rootMargin: "-20% 0px -65% 0px",
+      threshold: [0, 1],
+    },
+  );
+
+  for (const h2Tag of h2Tags) {
+    observer.observe(h2Tag);
   }
 }

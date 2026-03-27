@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm rollup:watch & pnpm serve",
+    "proxy": "node proxy-server.js",
     "serve": "live-server --open=index.html",
     "rollup:watch": "rollup -c -w",
     "build": "rollup -c",

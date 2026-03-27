@@ -6,6 +6,9 @@ import path from "node:path";
 const TARGET_URL =
   "https://www.propal.io/fr/blog/proposition-commerciale-freelance";
 const PORT = 3001;
+const LOCAL_BUNDLE_PATH = "/dist/bundle.js";
+const REMOTE_BUNDLE_PATTERN =
+  /<script[^>]+src=["'][^"']*propal-landing-motion[^"']*\/dist\/bundle\.js[^"']*["'][^>]*><\/script>/i;
 
 function fetchPage(url) {
   return new Promise((resolve, reject) => {
@@ -39,11 +42,11 @@ const server = http.createServer(async (req, res) => {
 
   try {
     const html = await fetchPage(TARGET_URL);
-    // Inject bundle.js just before </body>
-    const injected = html.replace(
-      "</body>",
-      '<script src="/dist/bundle.js"></script></body>',
-    );
+    const localBundleTag = `<script src="${LOCAL_BUNDLE_PATH}"></script>`;
+    const injected = REMOTE_BUNDLE_PATTERN.test(html)
+      ? html.replace(REMOTE_BUNDLE_PATTERN, localBundleTag)
+      : html.replace("</body>", `${localBundleTag}</body>`);
+
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     res.end(injected);
   } catch (err) {
